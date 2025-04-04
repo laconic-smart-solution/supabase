@@ -9,6 +9,20 @@ name: supabase
 
 services:
 
+  nginx:
+    build:
+      context: ./nginx
+      args:
+        - NGINX_VERSION=${NGINX_VERSION}
+        - TZ=${TZ}
+    ports:
+      - "${NGINX_HTTP}:80"
+      - "${NGINX_HTTPS}:443"
+    volumes:
+      - ./volumes/nginx:/var/log/nginx
+      - ./nginx/sites:/etc/nginx/sites-available
+      - ./nginx/ssl:/etc/nginx/ssl
+
   studio:
     container_name: supabase-studio
     image: supabase/studio:20250317-6955350
